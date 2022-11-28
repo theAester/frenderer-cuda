@@ -1,45 +1,42 @@
 # F(unction) Renderer
-tiny little c++ renderer.
+tiny little c++ renderer. this time, with GPU.
+
+<b> The frenderer-cuda library is almost completely backward-compatible with the older frenderer library so the rest of this readme is pretty much the same as before. Unless you are trying to alter the Library code, all your previous codes must work with a change of extension(.cpp -> .cu) and adding the __device__ attribute(see examples).</b>
 
 if you can provide a collision function for it, frenderer can render it.
 
 # compiling
 
 ``` bash
-make [filename]
+make [filename] CC=nvcc
 ```
 
 for example use
 ``` bash
-make main2
+make main2 CC=nvcc
 ```
 to compile main.cpp to build/main2
 
 # Examples
-main.cpp : render to an actual image. The only example of this type. Uses SDL2 for 2d graphics. The rest of the examples render to terminal(add libSDL2 to linker)
 
-main2.cpp: reders two nested donuts spinning about the z and the y axis.
-
-main3.cpp: a huge fucking donut
-
-main4.cpp: two huge fucking donuts
-
-main5.cpp: ball going through spinning donut.
+main5.cu: ball going through spinning donut.
 
 # How to use
  1. derive your mathematical collision function. A shape is described by the collision function f: R3 -> R when f(<b>r</b>)=0 IIF <b>r</b> is on the shape
  2. derive a new class from the body class and override ``` cplx surf_func (vec3<cplx> r) ``` to be your collision function. cplx is complx number datatype.
  3. you also need to override the ``` diffuse_color``` and ```shader```
-   ``` cpp
+   ``` cuda
     class donut : public body{
       public:
       double sr,br;
+      __host__ __device__
       donut(vec3<double> position, vec3<double> angle, double small_radius, double big_radius) : body(position, angle, 0, 4){
                                           //     ^                                                                     ^  ^
                                           //  euler angles. extrinsic rotation performed                    reflectivity  degree of collision function(IMPORTANT)
         sr=small_radius;
         br=big_radius;
       }
+      __host__ __device__
       cplx surf_func(vec3<double> r){ // z^2 + (R-sqrt(x^2+y^2))^2 = r^2
           cplx x2 = r.x*r.x;
           cplx y2 = r.y*r.y;
@@ -47,6 +44,7 @@ main5.cpp: ball going through spinning donut.
           cplx t1 = (x2 + y2 + r.z*r.z + R2 - rr*rr);
           return t1*t1 - 4*R2*(x2+y2); // note that its best to play around with the collision function to turn it into a polynomial. or atleast something similar
       }
+      __host__ __device__
       vec3<double> diffuse_color(vec3<double> intersection_point){
   //    ^
   // color in (r,g,b) format where 0 < r,g,b < 1. if any of the color componenets fall outside the specified ranged they will be clipped to the closest extreme.
@@ -61,7 +59,7 @@ main5.cpp: ball going through spinning donut.
     };
   ```
  4. in the main proc. instantiate a scene, a camera and atleast one light source and add the camera and lights to your scene
-  ``` cpp
+  ``` cuda
     int main(int argc, char* argv[]){
       camera cam(vec3<double>(-6,0,0),vec3<double>(0,0,0),72.6, 1);
       //           ^                          ^             ^   ^
@@ -107,5 +105,3 @@ since numeric calculations can be time consuming two actions are possible:
 # Notes:
 Code reviews and critisism is appreciated. You can email through hiradcode@yahoo.com
 
-The current release relies on cpu and main memory to do all the calculations and hence is a little slow. A greate TODO is to leave some of the calculations 
-to the GPU which would be a huge speed up.
