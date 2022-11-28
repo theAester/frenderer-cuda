@@ -1,7 +1,7 @@
 # F(unction) Renderer
 tiny little c++ renderer. this time, with GPU.
 
-<b> The frenderer-cuda library is almost completely backward-compatible with the older frenderer library so the rest of this readme is pretty much the same as before. Unless you are trying to alter the Library code, all your previous codes must work with a change of extension(.cpp -> .cu) and adding the __device__ attribute(see examples).</b>
+<b> The frenderer-cuda library is almost completely backward-compatible with the older frenderer library so the rest of this readme is pretty much the same as before. Unless you are trying to alter the Library code, all your previous codes must work with a change of extension(.cpp -> .cu) and adding the \_\_device\_\_ attribute(see examples).</b>
 
 if you can provide a collision function for it, frenderer can render it.
 
@@ -29,7 +29,7 @@ main5.cu: ball going through spinning donut.
     class donut : public body{
       public:
       double sr,br;
-      __host__ __device__
+      __host__ __device__   // < dont forget to add these!
       donut(vec3<double> position, vec3<double> angle, double small_radius, double big_radius) : body(position, angle, 0, 4){
                                           //     ^                                                                     ^  ^
                                           //  euler angles. extrinsic rotation performed                    reflectivity  degree of collision function(IMPORTANT)
