@@ -7,16 +7,16 @@ class dir3{
 	T x;
 	T y;
 	T z;
-	dir3(T,T,T);
-	dir3(vec3<T>);
-	dir3();
-	dir3<T> operator+(dir3<T>);
-	dir3<T> operator-(dir3<T>);
-	vec3<T> operator*(T);
-	T operator*(dir3<T>);
-	void operator+=(dir3<T>);
-	void operator-=(dir3<T>);
-	void pointTowards(vec3<T>);
+	__host__ __device__ dir3(T,T,T);
+	__host__ __device__ dir3(vec3<T>);
+	__host__ __device__ dir3();
+	__host__ __device__ dir3<T> operator+(dir3<T>);
+	__host__ __device__ dir3<T> operator-(dir3<T>);
+	__host__ __device__ vec3<T> operator*(T);
+	__host__ __device__ T operator*(dir3<T>);
+	__host__ __device__ void operator+=(dir3<T>);
+	__host__ __device__ void operator-=(dir3<T>);
+	__host__ __device__ void pointTowards(vec3<T>);
 };
 
 #endif

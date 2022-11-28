@@ -10,18 +10,18 @@ class vec3{
 	T x;
 	T y;
 	T z;
-	vec3(T,T,T);
-	vec3();
-	vec3(dir3<T>);
+	__host__ __device__ vec3(T,T,T);
+	__host__ __device__ vec3();
+	__host__ __device__ vec3(dir3<T>);
 
-	vec3<T> operator+(vec3<T>);
-	vec3<T> operator-(vec3<T>);
-	T operator*(vec3<T>);
-	vec3<T> operator*(T);
+	__host__ __device__ vec3<T> operator+(vec3<T>);
+	__host__ __device__ vec3<T> operator-(vec3<T>);
+	__host__ __device__ T operator*(vec3<T>);
+	__host__ __device__ vec3<T> operator*(T);
 
-	void operator+=(vec3<T>);
-	void operator-=(vec3<T>);
-	void operator*=(T);
+	__host__ __device__ void operator+=(vec3<T>);
+	__host__ __device__ void operator-=(vec3<T>);
+	__host__ __device__ void operator*=(T);
 
 };
 #endif

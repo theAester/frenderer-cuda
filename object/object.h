@@ -3,7 +3,7 @@
 class object{
 	public:
 	vec3<double> pos;
-	object(vec3<double>);
+	__host__ __device__ object(vec3<double>);
 	object();
 };
 #endif
